@@ -9,7 +9,7 @@ const instance = axios.create({
     validateStatus: status => {
         return status >= 200 && status < 300; // default
     },
-    baseURL: 'https://www.xxx.com' // 服务端域名
+    baseURL: 'https://netcloud-music.vercel.app/' // 服务端域名
 });
 
 // 添加请求拦截器
