@@ -4,15 +4,22 @@
             <div class="filter-item" v-for="(item, index) in categories" :key="index">
                 <div class="filter-title">{{ item.name }}</div>
                 <div class="filter-box">
-                    <span :class="['item-box', curType === sub.name ? 'active' : '']" v-for="sub in item.children.slice(0, 8)" :key="sub.name"><em @click="selectType(sub)">{{ sub.name }}</em></span>
-                    
+                    <span :class="['item-box', curType === sub.name ? 'active' : '']"
+                        v-for="sub in item.children.slice(0, 8)" :key="sub.name"><em @click="selectType(sub)">{{
+                                sub.name
+                        }}</em></span>
+
                     <el-popover :width="'auto'" trigger="click">
                         <template #reference>
-                            <span :class="['item-box', 'filter-more', moreTxt[index] ? 'active' : '']" v-if="item.children.length > 9"><em>{{ moreTxt[index] ? curType : '更多'}}<i class="iconfont icon-arrow"></i></em></span>
+                            <span :class="['item-box', 'filter-more', moreTxt[index] ? 'active' : '']"
+                                v-if="item.children.length > 9"><em>{{ moreTxt[index] ? curType : '更多' }}<i
+                                        class="iconfont icon-arrow"></i></em></span>
                             <span v-else></span>
                         </template>
                         <div class="filter-drop">
-                            <span :class="['item-box', curType === sub.name ? 'active' : '']" v-for="sub in item.children.slice(9)" :key="sub.name"><em @click="selectType(sub, index)">{{ sub.name }}</em></span>
+                            <span :class="['item-box', curType === sub.name ? 'active' : '']"
+                                v-for="sub in item.children.slice(9)" :key="sub.name"><em
+                                    @click="selectType(sub, index)">{{ sub.name }}</em></span>
                         </div>
                     </el-popover>
                 </div>
@@ -20,17 +27,17 @@
         </div>
         <div class="list-container">
             <div class="list-head">
-                <h2>{{curType}} <em v-if="curType !== allList.name" class="filter-close" @click="closed"><i class="iconfont icon-closed"></i></em></h2>
+                <h2>{{ curType }} <em v-if="curType !== allList.name" class="filter-close" @click="closed"><i
+                            class="iconfont icon-closed"></i></em></h2>
                 <div class="type">
                     <span :class="params.order === 'hot' ? 'active' : ''" @click="selectOrder('hot')">热门</span>
                     <span :class="params.order === 'new' ? 'active' : ''" @click="selectOrder('new')">最新</span>
                 </div>
             </div>
-            <div class='wrapper infinite-list' v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
+            <div class='wrapper infinite-list' v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
+                infinite-scroll-distance="100">
                 <play-list :playList="playlist_list" :loading="playlist_loading" :num="playlist_count"></play-list>
-                <template v-if="busy">
-                    <Loading />
-                </template>
+
             </div>
         </div>
     </div>
@@ -38,12 +45,12 @@
 
 <script>
 import PlayList from '@components/PlayList.vue';
-import Loading from '@components/loading.vue'
+
 
 import { onMounted, getCurrentInstance, reactive, toRefs, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 export default {
-    name:'PlayListWrap',
+    name: 'PlayListWrap',
     setup() {
         const { proxy } = getCurrentInstance();
         const route = useRoute();
@@ -69,7 +76,7 @@ export default {
             }
         });
 
-        const getCatlist = async() => {
+        const getCatlist = async () => {
             const { data: res } = await proxy.$http.catlist()
             info.sub = res.sub
 
@@ -118,7 +125,7 @@ export default {
             router.push({ path: 'playlist', query: { cat: info.params.cat, order: type } })
         };
 
-        const getPlayList = async(params) => {
+        const getPlayList = async (params) => {
             const { data: res } = await proxy.$http.playList(params)
 
             if (res.code !== 200) {
@@ -149,12 +156,12 @@ export default {
         });
 
         watch(() => info.params, (newVal, oldVal) => {
-                if (newVal.cat !== oldVal.cat) {
-                    info.busy = true;
-                    info.playlist_list = [];
-                }
-                getPlayList(newVal)
-            }, {
+            if (newVal.cat !== oldVal.cat) {
+                info.busy = true;
+                info.playlist_list = [];
+            }
+            getPlayList(newVal)
+        }, {
             deep: true // 深度监听
         });
 
@@ -169,7 +176,7 @@ export default {
     },
     components: {
         PlayList,
-        Loading
+
     },
 }
 </script>
@@ -177,9 +184,11 @@ export default {
 .wrapper {
     min-height: 500px;
 }
+
 .playlist {
     padding-top: 40px;
 }
+
 .filter {
     display: flex;
     height: 116px;
@@ -189,6 +198,7 @@ export default {
     border-radius: 12px;
     box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
 }
+
 .filter-item {
     flex: 2;
     border-left: 1px solid #f5f5f5;
@@ -255,6 +265,7 @@ export default {
         }
     }
 }
+
 .filter-drop {
 
     .item-box {
